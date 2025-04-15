@@ -1,5 +1,6 @@
 ﻿@page "/rental";
 @using CPSY200FinalProject.Components.Layout
+@using CPSY200FinalProject.Components.Persistence
 
 <div style="text-align: center">
     <h3 class="d-flex justify-content-left">Add new rental</h3>
@@ -63,7 +64,7 @@
 @code {
     private string rentalDate="", returnDate="";
     private double? price, totalCost;
-    private List<RentalObj> rentals = new();
+    private List<RentalObj> rentals = ReadDatabase.readRentals(ReadDatabase.databaseConfig());
     private bool removeButtonIsPressed=false;
     
     private void AddEquipment()
@@ -73,6 +74,8 @@
         }
         
         rentals.Add(new RentalObj(rentalDate, returnDate, price, totalCost));
+        
+        WriteDatabase.writeRentals(WriteDatabase.databaseConfig(), rentals);
 
         // reset
         rentalDate = ""; 
@@ -92,6 +95,8 @@
                 rentals.Remove(rentals[i]);
             }
         }
+        
+        WriteDatabase.writeRentals(WriteDatabase.databaseConfig(), rentals);
 
         removeButtonIsPressed = false;
     }

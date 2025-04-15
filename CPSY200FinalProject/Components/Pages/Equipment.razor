@@ -1,6 +1,7 @@
 ﻿@page "/equipment";
 
 @using CPSY200FinalProject.Components.Layout
+@using CPSY200FinalProject.Components.Persistence
 
 <div style="text-align: center">
     <h3 class="d-flex justify-content-left">Add new equipment</h3>
@@ -64,7 +65,7 @@
 @code {
     private string category = "", name = "", description = "";
     private double? dailyRentalCost;
-    private List<EquipmentObj> equipment = new();
+    private List<EquipmentObj> equipment = ReadDatabase.readEquipment(ReadDatabase.databaseConfig());
     private bool removeButtonIsPressed=false;
     
     private void AddEquipment()
@@ -74,6 +75,8 @@
         }
         
         equipment.Add(new EquipmentObj(category, name, description, (double) dailyRentalCost));
+        
+        WriteDatabase.writeEquipment(WriteDatabase.databaseConfig(), equipment);
 
         // reset
         category = ""; 
@@ -93,6 +96,8 @@
                 equipment.Remove(equipment[i]);
             }
         }
+        
+        WriteDatabase.writeEquipment(WriteDatabase.databaseConfig(), equipment);
 
         removeButtonIsPressed = false;
     }

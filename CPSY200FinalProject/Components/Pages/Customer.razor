@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using CPSY200FinalProject.Components.Layout
+@using CPSY200FinalProject.Components.Persistence
 
 <div style="text-align: center">
     <h3 class="d-flex justify-content-left">Add new customer</h3>
@@ -71,7 +72,7 @@
 @code {
     private string firstName="", lastName="", email="", notes="";
     private int? phoneNumber;
-    private List<CustomerObj> customers = new();
+    private List<CustomerObj> customers = ReadDatabase.readCustomers(ReadDatabase.databaseConfig());
     private bool removeButtonIsPressed=false;
     
     private void AddCustomer()
@@ -82,6 +83,8 @@
         
         customers.Add(new CustomerObj(firstName, lastName, email, notes, phoneNumber));
 
+        WriteDatabase.writeCustomers(WriteDatabase.databaseConfig(), customers); // write every time a customer is added
+        
         // reset
         firstName = ""; 
         lastName = "";
@@ -101,6 +104,8 @@
                 customers.Remove(customers[i]);
             }
         }
+
+        WriteDatabase.writeCustomers(WriteDatabase.databaseConfig(), customers); // write every time a customer is removed
         
         removeButtonIsPressed = false;
     }
