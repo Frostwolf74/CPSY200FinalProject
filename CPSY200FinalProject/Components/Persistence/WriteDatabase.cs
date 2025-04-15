@@ -94,13 +94,11 @@ public class WriteDatabase
             
         MySqlCommand command1 = new MySqlCommand(query1, connection);   
         command1.ExecuteNonQuery();
-
-        int i = 0;
+        
         foreach (var r in rentals)
         {
-            i++;
             string query2 =
-                $"INSERT INTO rental VALUES({i}, '{r.rentalDate}', '{r.returnDate}', {r.price}, {r.totalCost})"
+                $"INSERT INTO rental VALUES('{r.rentalDate}', '{r.returnDate}', {r.price}, {r.totalCost})"
             ;
             
             MySqlCommand command2 = new MySqlCommand(query2, connection);   

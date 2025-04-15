@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CPSY200FinalProject")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+f2bd4fb46879734b2330da1b980a78851878fce9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+91d037d93b90d84d3a6e4da4522fa7929acb0a0b")]
 [assembly: System.Reflection.AssemblyProductAttribute("CPSY200FinalProject")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CPSY200FinalProject")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
