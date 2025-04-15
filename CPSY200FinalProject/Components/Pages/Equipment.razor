@@ -1,0 +1,99 @@
+﻿@page "/equipment";
+
+@using CPSY200FinalProject.Components.Layout
+
+<div style="text-align: center">
+    <h3 class="d-flex justify-content-left">Add new equipment</h3>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="category" placeholder="Category">
+    </div>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="name" placeholder="Name">
+    </div>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="description" placeholder="Description">
+    </div>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="dailyRentalCost" placeholder="Daily Rental Cost">
+    </div>
+
+    <div class="justify-content-center">
+        <button @onclick="AddEquipment" class="bg-success" style="border-radius: 10px; border: 0; min-width: 90px;">Add</button>
+    </div>
+    
+    <h3 class="d-flex justify-content-left" style="margin-top: 20px;">Equipment</h3>
+
+    @foreach (var item in equipment)
+    {
+        <div class="rounded px-3 py-2 mb-2" style="background-color: #d9d9d9; min-width: 500px">
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    <input type="checkbox" @bind="item.selected" @bind:event="onchange" class="form-check-input" />
+                </div>
+                
+                <div class="w-100" style="min-width: fit-content">
+                    <div class="row">
+                        <div class="col-6">
+                            <div>@item.name</div>
+                            <div>@item.description</div>
+                        </div>
+                        <div class="col-6">
+                            <div>@item.category</div>
+                            <div>@item.dailyRentalCost</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (equipment.Count > 0)
+    {
+        <div class="justify-content-center">
+            <button @onclick="RemoveEquipment" class="bg-danger" style="border-radius: 10px; border: 0; min-width: 90px;">Remove</button>
+        </div>
+    }
+    else
+    {
+        <div>
+            <p style="color: lightgrey">There is no equipment in the database right now.</p>
+        </div>
+    }
+</div>
+
+@code {
+    private string category = "", name = "", description = "";
+    private double? dailyRentalCost;
+    private List<EquipmentObj> equipment = new();
+    private bool removeButtonIsPressed=false;
+    
+    private void AddEquipment()
+    {
+        if (category == "" || name == "" || dailyRentalCost == null){
+            return; // prevent empty entries
+        }
+        
+        equipment.Add(new EquipmentObj(category, name, description, (double) dailyRentalCost));
+
+        // reset
+        category = ""; 
+        name = "";
+        description = "";
+        dailyRentalCost = null;
+    }
+
+    private void RemoveEquipment()
+    {
+        removeButtonIsPressed = true;
+
+        for (int i = 0; i < equipment.Count; ++i)
+        {
+            if (equipment[i].selected)
+            {
+                equipment.Remove(equipment[i]);
+            }
+        }
+
+        removeButtonIsPressed = false;
+    }
+}

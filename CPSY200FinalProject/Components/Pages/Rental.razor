@@ -1,0 +1,98 @@
+﻿@page "/rental";
+@using CPSY200FinalProject.Components.Layout
+
+<div style="text-align: center">
+    <h3 class="d-flex justify-content-left">Add new rental</h3>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="rentalDate" placeholder="Rental Date">
+    </div>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="returnDate" placeholder="Return Date">
+    </div>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="price" placeholder="Price">
+    </div>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="totalCost" placeholder="Total Cost">
+    </div>
+
+    <div class="justify-content-center">
+        <button @onclick="AddEquipment" class="bg-success" style="border-radius: 10px; border: 0; min-width: 90px;">Add</button>
+    </div>
+    
+    <h3 class="d-flex justify-content-left" style="margin-top: 20px;">Rentals</h3>
+
+    @foreach (var item in rentals)
+    {
+        <div class="rounded px-3 py-2 mb-2" style="background-color: #d9d9d9; min-width: 500px">
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    <input type="checkbox" @bind="item.selected" @bind:event="onchange" class="form-check-input" />
+                </div>
+                
+                <div class="w-100" style="min-width: fit-content">
+                    <div class="row">
+                        <div class="col-6">
+                            <div>@item.rentalDate</div>
+                            <div>@item.returnDate</div>
+                        </div>
+                        <div class="col-6">
+                            <div>@item.price</div>
+                            <div>@item.totalCost</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (rentals.Count > 0)
+    {
+        <div class="justify-content-center">
+            <button @onclick="RemoveEquipment" class="bg-danger" style="border-radius: 10px; border: 0; min-width: 90px;">Remove</button>
+        </div>
+    }
+    else
+    {
+        <div>
+            <p style="color: lightgrey">There are no rentals in the database right now.</p>
+        </div>
+    }
+</div>
+
+@code {
+    private string rentalDate="", returnDate="";
+    private double? price, totalCost;
+    private List<RentalObj> rentals = new();
+    private bool removeButtonIsPressed=false;
+    
+    private void AddEquipment()
+    {
+        if (rentalDate == "" || returnDate == "" || price == null){
+            return; // prevent empty entries
+        }
+        
+        rentals.Add(new RentalObj(rentalDate, returnDate, price, totalCost));
+
+        // reset
+        rentalDate = ""; 
+        returnDate = "";
+        price = null;
+        totalCost = null;
+    }
+
+    private void RemoveEquipment()
+    {
+        removeButtonIsPressed = true;
+
+        for (int i = 0; i < rentals.Count; ++i)
+        {
+            if (rentals[i].selected)
+            {
+                rentals.Remove(rentals[i]);
+            }
+        }
+
+        removeButtonIsPressed = false;
+    }
+}

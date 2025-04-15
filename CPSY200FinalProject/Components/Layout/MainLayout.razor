@@ -1,0 +1,32 @@
+﻿@inherits LayoutComponentBase
+@inject HeaderService HeaderService
+
+<div class="page">
+    <main>
+        <div class="top-row ps-3" style="background-color: #d9d9d9; justify-content: center; filter: drop-shadow(0 0 0.75rem #515151);">
+            <h3>Managing @HeaderService.HeaderText</h3>
+        </div>
+
+        <div style="display: flex; flex: 1; overflow: hidden;">
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+            
+            <article class="content px-4 d-flex justify-content-center" style="height: 100vh; width: 75vw;">
+                @Body
+            </article>
+        </div>
+    </main>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        HeaderService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        HeaderService.OnChange -= StateHasChanged;
+    }
+}

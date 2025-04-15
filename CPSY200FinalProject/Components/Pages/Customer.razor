@@ -1,0 +1,107 @@
+﻿@page "/"
+@using CPSY200FinalProject.Components.Layout
+
+<div style="text-align: center">
+    <h3 class="d-flex justify-content-left">Add new customer</h3>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="firstName" placeholder="First Name">
+    </div>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="lastName" placeholder="Last Name">
+    </div>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="phoneNumber" placeholder="Phone Number">
+    </div>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="email" placeholder="Email">
+    </div>
+    <div>
+        <input style="border: 0; border-radius: 5px; background-color: #d9d9d9; margin-bottom: 10px; padding-left: 10px;" @bind="notes" placeholder="Notes">
+    </div>
+    
+    <div class="justify-content-center">
+        <button @onclick="AddCustomer" class="bg-success" style="border-radius: 10px; border: 0; min-width: 90px;">Add</button>
+    </div>
+    <h3 class="d-flex justify-content-left" style="margin-top: 20px;">Customers</h3>
+
+    @foreach (var item in customers)
+    {
+        @if (item.selected && removeButtonIsPressed) continue;
+        
+        <div class="rounded px-3 py-2 mb-2" style="background-color: #d9d9d9; min-width: 500px">
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    <input @bind="item.selected" @bind:event="onchange" type="checkbox" class="form-check-input" />
+                </div>
+                
+                <div class="w-100" style="min-width: fit-content">
+                    <div class="row">
+                        <div class="col-6">
+                            <div>@item.firstName</div>
+                            <div>@item.lastName</div>
+                        </div>
+                        <div class="col-6">
+                            <div>@item.phoneNumber</div>
+                            <div>@item.email</div>
+                        </div>
+                        <div class="col-6">
+                            <div>@item.notes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (customers.Count > 0)
+    {
+        <div class="justify-content-center">
+            <button @onclick="RemoveCustomer" class="bg-danger" style="border-radius: 10px; border: 0; min-width: 90px;">Remove</button>
+        </div>
+    }
+    else
+    {
+        <div>
+            <p style="color: lightgrey">There are no customers in the database right now.</p>
+        </div>
+    }
+
+</div>
+
+@code {
+    private string firstName="", lastName="", email="", notes="";
+    private int? phoneNumber;
+    private List<CustomerObj> customers = new();
+    private bool removeButtonIsPressed=false;
+    
+    private void AddCustomer()
+    {
+        if (firstName == "" || lastName == ""){
+            return; // prevent empty entries
+        }
+        
+        customers.Add(new CustomerObj(firstName, lastName, email, notes, phoneNumber));
+
+        // reset
+        firstName = ""; 
+        lastName = "";
+        email = "";
+        phoneNumber = null;
+        notes = "";
+    }
+
+    private void RemoveCustomer()
+    {
+        removeButtonIsPressed = true;
+        
+        for(int i = 0; i < customers.Count; ++i)
+        {
+            if (customers[i].selected)
+            {
+                customers.Remove(customers[i]);
+            }
+        }
+        
+        removeButtonIsPressed = false;
+    }
+}

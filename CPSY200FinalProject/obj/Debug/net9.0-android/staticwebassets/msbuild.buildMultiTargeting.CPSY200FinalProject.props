@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\CPSY200FinalProject.props" />
+</Project>
